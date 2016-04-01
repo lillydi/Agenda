@@ -15,11 +15,13 @@ public class Formulario extends AppCompatActivity {
 
         Button botaoSalvar = (Button) findViewById(R.id.formulario_botaoSalvar);
 
+
         if (botaoSalvar != null) {
             botaoSalvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(Formulario.this, "( ͡° ͜ʖ ͡°)", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             });
         }
