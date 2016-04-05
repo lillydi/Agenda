@@ -2,28 +2,47 @@ package com.cacere.lillydi.agenda;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cacere.lillydi.agenda.modelo.Aluno;
+
 public class Formulario extends AppCompatActivity {
+
+    private FormularioHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
+        helper = new FormularioHelper(this);
 
-        Button botaoSalvar = (Button) findViewById(R.id.formulario_botaoSalvar);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_agenda, menu);
 
-        if (botaoSalvar != null) {
-            botaoSalvar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(Formulario.this, "( ͡° ͜ʖ ͡°)", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_ok:
+                Aluno aluno = helper.getAluno();
+
+                Toast.makeText(Formulario.this, "( ͡° ͜ʖ ͡°) - " + aluno.getNome() + " salvo!", Toast.LENGTH_SHORT).show();
+                finish();
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
