@@ -70,11 +70,20 @@ public class AlunoDAO extends SQLiteOpenHelper {
             aluno.setEmail(cursor.getString(cursor.getColumnIndex("email")));
             aluno.setEndereco(cursor.getString(cursor.getColumnIndex("endereco")));
             aluno.setTelefone(cursor.getString(cursor.getColumnIndex("telefone")));
-            aluno.setNota(cursor.getDouble( cursor.getColumnIndex("nota")));
+            aluno.setNota(cursor.getDouble(cursor.getColumnIndex("nota")));
             alunos.add(aluno);
         }
         cursor.close();
 
         return alunos;
+    }
+
+    public void delete(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] params = {
+                aluno.getId().toString()
+        };
+        db.delete("Alunos", "id = ?", params);
     }
 }
