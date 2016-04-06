@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cacere.lillydi.agenda.dao.AlunoDAO;
 import com.cacere.lillydi.agenda.modelo.Aluno;
 
 public class Formulario extends AppCompatActivity {
@@ -38,6 +39,10 @@ public class Formulario extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_ok:
                 Aluno aluno = helper.getAluno();
+
+                AlunoDAO dao = new AlunoDAO(this);
+                dao.insert(aluno);
+                dao.close();
 
                 Toast.makeText(Formulario.this, "( ͡° ͜ʖ ͡°) - " + aluno.getNome() + " salvo!", Toast.LENGTH_SHORT).show();
                 finish();

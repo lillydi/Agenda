@@ -59,4 +59,17 @@ public class Aluno {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return id + " - " + nome +"\n Nota: " + nota.toString();
+    }
 }

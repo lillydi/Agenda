@@ -13,6 +13,11 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.cacere.lillydi.agenda.dao.AlunoDAO;
+import com.cacere.lillydi.agenda.modelo.Aluno;
+
+import java.util.List;
+
 public class AgendaActivity extends AppCompatActivity {
 
     @Override
@@ -22,13 +27,6 @@ public class AgendaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String[] alunos = {"Fulano", "Ciclano", "Beltrano", "Zezinho"};
-
-        ListView lista = (ListView) findViewById(R.id.lista_alunos);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, alunos);
-
-        lista.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -41,5 +39,22 @@ public class AgendaActivity extends AppCompatActivity {
                 startActivity(vaiPraFormulario);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        carregarLista();
+    }
+
+    private void carregarLista() {
+        AlunoDAO dao = new AlunoDAO(this);
+        List<Aluno> alunos = dao.getAlunos();
+
+        ListView lista = (ListView) findViewById(R.id.lista_alunos);
+
+        ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this,android.R.layout.simple_list_item_1, alunos);
+
+        lista.setAdapter(adapter);
     }
 }
