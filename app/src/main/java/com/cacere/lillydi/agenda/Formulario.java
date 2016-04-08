@@ -1,5 +1,6 @@
 package com.cacere.lillydi.agenda;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,7 +22,13 @@ public class Formulario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
+
         helper = new FormularioHelper(this);
+        Intent intent = getIntent();
+        Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
+        if(aluno != null){
+            helper.preencheFormulario(aluno);
+        }
 
     }
 
@@ -39,12 +46,17 @@ public class Formulario extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_ok:
                 Aluno aluno = helper.getAluno();
-
                 AlunoDAO dao = new AlunoDAO(this);
-                dao.insert(aluno);
+                if(aluno.getId() != null){
+                    dao.update(aluno);
+                    Toast.makeText(Formulario.this, "( ͡° ͜ʖ ͡°) - " + aluno.getNome() + " atualizado!!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    dao.insert(aluno);
+                    Toast.makeText(Formulario.this, "( ͡° ͜ʖ ͡°) - " + aluno.getNome() + " salvo!", Toast.LENGTH_SHORT).show();
+                }
                 dao.close();
 
-                Toast.makeText(Formulario.this, "( ͡° ͜ʖ ͡°) - " + aluno.getNome() + " salvo!", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
         }

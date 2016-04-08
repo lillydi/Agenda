@@ -1,7 +1,9 @@
 package com.cacere.lillydi.agenda;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Browser;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,9 +39,10 @@ public class AgendaActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Aluno aluno = (Aluno) lista.getItemAtPosition(position);
-                Snackbar.make(view, "┌( ಠ‿ಠ)┘ - " + aluno.getNome(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
+                Intent vaiParaFormulario = new Intent(AgendaActivity.this, Formulario.class);
+                vaiParaFormulario.putExtra("aluno", aluno);
+                startActivity(vaiParaFormulario);
             }
         });
 
@@ -73,15 +76,42 @@ public class AgendaActivity extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final Aluno aluno = (Aluno) lista.getItemAtPosition(info.position);
+
+        MenuItem discar = menu.add("Ligar para Aluno");
+        String paraDiscar = "tel:"+aluno.getTelefone();
+        Intent intentDiscar = new Intent(Intent.ACTION_DIAL);
+        intentDiscar.setData(Uri.parse(paraDiscar));
+        discar.setIntent(intentDiscar);
+
+        MenuItem site = menu.add("Enviar Email");
+        Intent intentSite = new Intent(Intent.ACTION_VIEW);
+        String mailto =  aluno.getEmail();
+        if(!mailto.startsWith("mailto:")){
+            mailto = "mailto:" + mailto;
+        }
+        intentSite.setData(Uri.parse(mailto));
+        site.setIntent(intentSite);
+
+        MenuItem sms = menu.add("Enviar SMS");
+        Intent intentSMS = new Intent(Intent.ACTION_VIEW);
+        String smsString = "sms:" + aluno.getTelefone();
+        intentSMS.setData(Uri.parse(smsString));
+        sms.setIntent(intentSMS);
+
+        MenuItem map = menu.add("Ver no Mapa");
+        Intent intentMap = new Intent(Intent.ACTION_VIEW);
+        String mapString = "geo:0,0?q=" + aluno.getEndereco();
+        intentMap.setData(Uri.parse(mapString));
+        map.setIntent(intentMap);
+
         MenuItem deletar = menu.add("Deletar");
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
-                Aluno aluno = (Aluno) lista.getItemAtPosition(info.position);
-                
                 AlunoDAO dao = new AlunoDAO(AgendaActivity.this);
                 dao.delete(aluno);
                 dao.close();

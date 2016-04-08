@@ -1,9 +1,11 @@
 package com.cacere.lillydi.agenda.modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by lillydi on 04/04/2016.
  */
-public class Aluno {
+public class Aluno implements Serializable{
 
     private Long id;
 
