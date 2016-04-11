@@ -93,12 +93,13 @@ public class AgendaActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(AgendaActivity.this,
                             new String[]{android.Manifest.permission.CALL_PHONE}, 123);
 
-                }
+                }else {
 
-                String paraDiscar = "tel:"+aluno.getTelefone();
-                Intent intentDiscar = new Intent(Intent.ACTION_CALL);
-                intentDiscar.setData(Uri.parse(paraDiscar));
-                startActivity(intentDiscar);
+                    String paraDiscar = "tel:" + aluno.getTelefone();
+                    Intent intentDiscar = new Intent(Intent.ACTION_CALL);
+                    intentDiscar.setData(Uri.parse(paraDiscar));
+                    startActivity(intentDiscar);
+                }
                 return false;
             }
         });
