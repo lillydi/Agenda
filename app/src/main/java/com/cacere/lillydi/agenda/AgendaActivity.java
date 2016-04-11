@@ -1,11 +1,13 @@
 package com.cacere.lillydi.agenda;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Browser;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -21,6 +23,7 @@ import com.cacere.lillydi.agenda.dao.AlunoDAO;
 import com.cacere.lillydi.agenda.modelo.Aluno;
 
 import java.util.List;
+import java.util.jar.Manifest;
 
 public class AgendaActivity extends AppCompatActivity {
 
@@ -81,10 +84,24 @@ public class AgendaActivity extends AppCompatActivity {
         final Aluno aluno = (Aluno) lista.getItemAtPosition(info.position);
 
         MenuItem discar = menu.add("Ligar para Aluno");
-        String paraDiscar = "tel:"+aluno.getTelefone();
-        Intent intentDiscar = new Intent(Intent.ACTION_DIAL);
-        intentDiscar.setData(Uri.parse(paraDiscar));
-        discar.setIntent(intentDiscar);
+        discar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                if(ActivityCompat.checkSelfPermission(AgendaActivity.this, android.Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(AgendaActivity.this,
+                            new String[]{android.Manifest.permission.CALL_PHONE}, 123);
+
+                }
+
+                String paraDiscar = "tel:"+aluno.getTelefone();
+                Intent intentDiscar = new Intent(Intent.ACTION_CALL);
+                intentDiscar.setData(Uri.parse(paraDiscar));
+                startActivity(intentDiscar);
+                return false;
+            }
+        });
 
         MenuItem site = menu.add("Enviar Email");
         Intent intentSite = new Intent(Intent.ACTION_VIEW);
