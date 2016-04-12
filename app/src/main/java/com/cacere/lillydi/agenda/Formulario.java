@@ -1,6 +1,9 @@
 package com.cacere.lillydi.agenda;
 
 import android.content.Intent;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +32,15 @@ public class Formulario extends AppCompatActivity {
         if(aluno != null){
             helper.preencheFormulario(aluno);
         }
+        FloatingActionButton fabCamera = (FloatingActionButton) findViewById(R.id.fab_camera);
+        fabCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, "Teste", Snackbar.LENGTH_LONG).show();
+                Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivity(intentCamera);
+            }
+        });
 
     }
 
