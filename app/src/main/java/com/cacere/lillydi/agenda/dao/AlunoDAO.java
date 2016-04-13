@@ -19,7 +19,8 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
 
     public AlunoDAO(Context context) {
-        super(context, "Agenda", null, 1);
+
+        super(context, "Agenda", null, 2);
     }
 
     @Override
@@ -30,7 +31,8 @@ public class AlunoDAO extends SQLiteOpenHelper {
                 "email TEXT, " +
                 "telefone TEXT, " +
                 "endereco TEXT, " +
-                "nota REAL" +
+                "nota REAL, " +
+                "caminhoFoto TEXT" +
                 ");";
 
         db.execSQL(sql);
@@ -39,9 +41,12 @@ public class AlunoDAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        String sql = "DROP TABLE IF EXISTS Alunos;";
-        db.execSQL(sql);
-        onCreate(db);
+        String sql;
+        switch (oldVersion) {
+            case 1:
+                sql = "ALTER TABLE Alunos ADD COLUMN caminhoFoto TEXT;";
+                db.execSQL(sql);
+        }
     }
 
     public void insert(Aluno aluno) {
@@ -67,6 +72,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
             aluno.setEndereco(cursor.getString(cursor.getColumnIndex("endereco")));
             aluno.setTelefone(cursor.getString(cursor.getColumnIndex("telefone")));
             aluno.setNota(cursor.getDouble(cursor.getColumnIndex("nota")));
+            aluno.setCaminhoFoto(cursor.getString(cursor.getColumnIndex("caminhoFoto")));
             alunos.add(aluno);
         }
         cursor.close();
@@ -100,6 +106,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
         dados.put("telefone", aluno.getTelefone());
         dados.put("endereco", aluno.getEndereco());
         dados.put("nota", aluno.getNota());
+        dados.put("caminhoFoto", aluno.getCaminhoFoto());
         return dados;
     }
 }
