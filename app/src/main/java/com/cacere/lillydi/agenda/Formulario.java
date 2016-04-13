@@ -1,6 +1,7 @@
 package com.cacere.lillydi.agenda;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,8 +18,11 @@ import android.widget.Toast;
 import com.cacere.lillydi.agenda.dao.AlunoDAO;
 import com.cacere.lillydi.agenda.modelo.Aluno;
 
+import java.io.File;
+
 public class Formulario extends AppCompatActivity {
 
+    public static final int COD_CAMERA = 111;
     private FormularioHelper helper;
 
     @Override
@@ -37,11 +41,22 @@ public class Formulario extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                Snackbar.make(view, "Teste", Snackbar.LENGTH_LONG).show();
+                String caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
+                File arquivoFoto = new File(caminhoFoto);
                 Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivity(intentCamera);
+                intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
+                startActivityForResult(intentCamera, COD_CAMERA);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == COD_CAMERA){
+
+        }
     }
 
     @Override
