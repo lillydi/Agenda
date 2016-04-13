@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.cacere.lillydi.agenda.adapter.AlunosAdapter;
 import com.cacere.lillydi.agenda.dao.AlunoDAO;
 import com.cacere.lillydi.agenda.modelo.Aluno;
 
@@ -72,7 +73,7 @@ public class AgendaActivity extends AppCompatActivity {
         AlunoDAO dao = new AlunoDAO(this);
         List<Aluno> alunos = dao.getAlunos();
 
-        ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this,android.R.layout.simple_list_item_1, alunos);
+        AlunosAdapter adapter = new AlunosAdapter(this, alunos);
 
         lista.setAdapter(adapter);
     }
