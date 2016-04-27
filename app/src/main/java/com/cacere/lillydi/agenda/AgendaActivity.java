@@ -18,8 +18,10 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cacere.lillydi.agenda.adapter.AlunosAdapter;
+import com.cacere.lillydi.agenda.converter.AlunoConverter;
 import com.cacere.lillydi.agenda.dao.AlunoDAO;
 import com.cacere.lillydi.agenda.modelo.Aluno;
 
@@ -61,6 +63,31 @@ public class AgendaActivity extends AppCompatActivity {
         });
 
         registerForContextMenu(lista);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_lista, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_enviar:
+
+                AlunoDAO dao = new AlunoDAO(this);
+                List<Aluno> lista = dao.getAlunos();
+                dao.close();
+                AlunoConverter conversor = new AlunoConverter();
+
+                String json = conversor.converterParaJSON(lista);
+                Toast.makeText(this, "Enviando... - " + json, Toast.LENGTH_LONG).show();
+                break;
+        }
+        return true;
     }
 
     @Override
